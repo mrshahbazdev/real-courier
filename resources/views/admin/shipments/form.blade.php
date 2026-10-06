@@ -95,8 +95,14 @@
             <tbody>
                 @forelse ($shipment->charges as $charge)
                     <tr>
-                        <td>{{ $charge->label }}</td>
-                        <td class="mono">${{ number_format((float) $charge->amount, 0) }}</td>
+                        <td colspan="2" style="padding:6px 12px">
+                            <form method="POST" action="{{ route('admin.shipments.charges.update', [$shipment, $charge->id]) }}" style="display:flex;gap:10px;align-items:center">
+                                @csrf @method('PUT')
+                                <input name="label" value="{{ $charge->label }}" list="charge-list" style="flex:1;padding:8px 11px;border:1.5px solid var(--line);border-radius:7px;font:inherit;font-size:14px">
+                                <input type="number" step="0.01" min="0" name="amount" value="{{ (float) $charge->amount }}" style="width:130px;padding:8px 11px;border:1.5px solid var(--line);border-radius:7px;font:inherit;font-size:14px">
+                                <button class="btn btn-primary btn-sm" type="submit">Save</button>
+                            </form>
+                        </td>
                         <td>
                             <form class="inline-form" method="POST" action="{{ route('admin.shipments.charges.destroy', [$shipment, $charge->id]) }}" onsubmit="return confirm('Remove this charge?')">
                                 @csrf @method('DELETE')

@@ -9,11 +9,69 @@ use Illuminate\Validation\Rule;
 
 class ShipmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $shipments = Shipment::with('charges')->withCount('events')->latest()->paginate(20);
+        $query = Shipment::with('charges')->withCount('events')->latest();
 
-        return view('admin.dashboard', compact('shipments'));
+        if ($search = trim((string) $request->get('q'))) {
+            $like = '%'.str_replace(' ', '', $search).'%';
+            $query->where(function ($w) use ($like) {
+                $w->where('tracking_no', 'like', $like)
+                  ->orWhere('consignee_name', 'like', '%'.request('q').'%')
+                  ->orWhere('sender_name', 'like', '%'.request('q').'%')
+                  ->orWhere('delivery_location', 'like', '%'.request('q').'%');
+            });
+        }
+        if ($status = $request->get('status')) {
+            $query->where('status', $status);
+        }
+
+        $shipments = $query->paginate(20)->withQueryString();
+
+        $stats = [
+            'total' => Shipment::count(),
+            'in_transit' => Shipment::where('status', 'like', '%ransit%')->count(),
+            'on_hold' => Shipment::where('status', 'like', '%old%')->count(),
+            'delivered' => Shipment::where('status', 'like', '%eliver%')->count(),
+            'charges_sum' => (float) \App\Models\ShipmentCharge::sum('amount'),
+        ];
+
+        return view('admin.dashboard', [
+            'shipments' => $shipments,
+            'stats' => $stats,
+            'statusOptions' => \App\Models\Setting::lines('status_options'),
+        ]);
+    }
+
+    public function quickStatus(Request $request, Shipment $shipment)
+    {
+        $data = $request->validate(['status' => 'required|string|max:120']);
+        $shipment->update($data);
+
+        return back()->with('success', 'Status updated to '.$shipment->status);
+    }
+
+    public function duplicate(Shipment $shipment)
+    {
+        $copy = $shipment->replicate(['tracking_no']);
+        $copy->tracking_no = $shipment->tracking_no.'-COPY-'.substr((string) time(), -4);
+        $copy->push();
+        foreach ($shipment->charges as $c) {
+            $copy->charges()->create($c->only('label', 'amount', 'sort_order'));
+        }
+
+        return redirect()->route('admin.shipments.edit', $copy)->with('success', 'Shipment duplicated — tracking number change kar lo.');
+    }
+
+    public function updateCharge(Request $request, Shipment $shipment, int $chargeId)
+    {
+        $data = $request->validate([
+            'label' => 'required|string|max:160',
+            'amount' => 'required|numeric|min:0',
+        ]);
+        $shipment->charges()->where('id', $chargeId)->update($data);
+
+        return back()->with('success', 'Charge updated.');
     }
 
     public function create()

@@ -24,7 +24,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/shipments/{shipment}/events', [ShipmentController::class, 'addEvent'])->name('shipments.events.store');
         Route::delete('/shipments/{shipment}/events/{event}', [ShipmentController::class, 'deleteEvent'])->name('shipments.events.destroy');
         Route::post('/shipments/{shipment}/charges', [ShipmentController::class, 'addCharge'])->name('shipments.charges.store');
+        Route::put('/shipments/{shipment}/charges/{charge}', [ShipmentController::class, 'updateCharge'])->name('shipments.charges.update');
         Route::delete('/shipments/{shipment}/charges/{charge}', [ShipmentController::class, 'deleteCharge'])->name('shipments.charges.destroy');
+        Route::post('/shipments/{shipment}/status', [ShipmentController::class, 'quickStatus'])->name('shipments.status');
+        Route::post('/shipments/{shipment}/duplicate', [ShipmentController::class, 'duplicate'])->name('shipments.duplicate');
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');

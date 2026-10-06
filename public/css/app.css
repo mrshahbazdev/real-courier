@@ -272,3 +272,18 @@ img { max-width: 100%; }
     .pkg-row { grid-template-columns: 1fr; }
     .pkg-box { display: none; }
 }
+
+/* ---------- Admin advanced ---------- */
+.stat-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 22px; }
+.stat-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.stat-card .sc-num { font-size: 26px; font-weight: 800; color: var(--navy); letter-spacing: -0.5px; }
+.stat-card .sc-lbl { font-size: 12.5px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 4px; }
+
+.filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-bar input[type=text] { flex: 1; min-width: 260px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 8px; font: inherit; font-size: 14.5px; }
+.filter-bar select { padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 8px; font: inherit; font-size: 14.5px; background: #fff; }
+
+.status-input { width: 150px; padding: 7px 10px; border: 1.5px solid var(--line); border-radius: 999px; font: inherit; font-size: 13.5px; font-weight: 700; color: var(--navy); background: var(--blue-soft); cursor: pointer; }
+.status-input:focus { border-color: var(--blue); outline: none; }
+
+@media (max-width: 1000px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
