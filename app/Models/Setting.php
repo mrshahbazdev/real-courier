@@ -38,6 +38,8 @@ class Setting extends Model
         'stat3_label' => 'Customer Support',
         'footer_text' => 'Reliable courier, air freight and cargo services worldwide.',
         'payment_methods' => 'visa,paypal,mastercard,stripe,gpay,applepay',
+        'status_options' => "Pending Pickup\nShipment Registered\nIn Transit\nArrived at Facility\nOut for Delivery\nOn Hold\nDelivered",
+        'charge_options' => "Registration Fee\nIncome Tax\nDiamond Ring Registration Fee\nMoney Exchange Fee\nRolex Watch Fee\nSignature Charges\nCustoms Clearance\nInsurance Fee",
         'logo' => 'img/logo.png',
         'signature' => null,
         'authorized_signature_name' => '',
@@ -74,5 +76,12 @@ class Setting extends Model
         $raw = static::get('payment_methods');
 
         return array_values(array_filter(array_map('trim', explode(',', (string) $raw))));
+    }
+
+    public static function lines(string $key): array
+    {
+        $raw = static::get($key, '');
+
+        return array_values(array_filter(array_map('trim', preg_split('/\r?\n/', (string) $raw))));
     }
 }

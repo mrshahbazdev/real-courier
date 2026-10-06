@@ -23,6 +23,15 @@
         </div>
     </section>
 
+    <section class="stats-band">
+        <div class="container">
+            <div class="stat"><div class="num">{{ $settings['stat1_num'] }}</div><div class="lbl">{{ $settings['stat1_label'] }}</div></div>
+            <div class="stat"><div class="num">{{ $settings['stat2_num'] }}</div><div class="lbl">{{ $settings['stat2_label'] }}</div></div>
+            <div class="stat"><div class="num">{{ $settings['stat3_num'] }}</div><div class="lbl">{{ $settings['stat3_label'] }}</div></div>
+            <div class="stat"><div class="num">100%</div><div class="lbl">Secure & Insured</div></div>
+        </div>
+    </section>
+
     <section class="section" id="services">
         <div class="container">
             <h2 class="section-title">Our Services</h2>
@@ -63,6 +72,16 @@
                     <div class="stat"><div class="num">{{ $settings['stat3_num'] }}</div><div class="lbl">{{ $settings['stat3_label'] }}</div></div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="cta-band">
+        <div class="container cta-inner">
+            <div>
+                <h2>Ready to ship with us?</h2>
+                <p>Contact our team or track your parcel — we move it, you relax.</p>
+            </div>
+            <a class="btn btn-accent" href="#track">Track a Shipment</a>
         </div>
     </section>
 

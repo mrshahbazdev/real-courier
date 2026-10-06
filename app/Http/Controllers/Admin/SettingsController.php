@@ -43,6 +43,8 @@ class SettingsController extends Controller
             'stat3_num' => 'nullable|string|max:20',
             'stat3_label' => 'nullable|string|max:80',
             'authorized_signature_name' => 'nullable|string|max:160',
+            'status_options' => 'nullable|string|max:2000',
+            'charge_options' => 'nullable|string|max:2000',
             'payment_methods' => 'nullable|array',
             'payment_methods.*' => 'in:'.implode(',', Setting::PAYMENT_METHODS),
             'logo' => 'nullable|image|max:2048',
@@ -58,6 +60,7 @@ class SettingsController extends Controller
             'service3_title', 'service3_text',
             'stat1_num', 'stat1_label', 'stat2_num', 'stat2_label', 'stat3_num', 'stat3_label',
             'authorized_signature_name',
+            'status_options', 'charge_options',
         ];
         foreach ($textKeys as $key) {
             Setting::put($key, $data[$key] ?? '');

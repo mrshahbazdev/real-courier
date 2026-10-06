@@ -78,6 +78,22 @@
     </div>
 
     <div class="panel">
+        <h2>Dropdown Lists (statuses & charge names)</h2>
+        <div class="form-grid">
+            <div class="field">
+                <label>Status Options (one per line)</label>
+                <textarea name="status_options" rows="8">{{ old('status_options', $settings['status_options']) }}</textarea>
+                <div class="help">Shipment form aur tracking events me dropdown me ye options aate hain.</div>
+            </div>
+            <div class="field">
+                <label>Charge Names (one per line)</label>
+                <textarea name="charge_options" rows="8">{{ old('charge_options', $settings['charge_options']) }}</textarea>
+                <div class="help">Charges add karte waqt dropdown me ye names aate hain — amount har shipment par alag hota hai.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
         <h2>Footer & Tracking Card</h2>
         <div class="field full"><label>Footer Text</label><input name="footer_text" value="{{ old('footer_text', $settings['footer_text']) }}" style="width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:8px;font:inherit"></div>
         <div style="margin-top:18px">

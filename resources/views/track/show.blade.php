@@ -67,11 +67,16 @@
 
                 <div class="detail-section">
                     <span class="sec-label">Package Information</span>
-                    <div class="detail-cols">
-                        <div class="kv"><div class="k">Description</div><div class="v">{{ $shipment->description ?? '—' }}</div></div>
-                        <div class="kv"><div class="k">Delivery Location</div><div class="v">{{ $shipment->delivery_location ?? '—' }}</div></div>
-                        <div class="kv"><div class="k">Status</div><div class="v">{{ $shipment->status }}</div></div>
-                        <div class="kv"><div class="k">Date</div><div class="v">{{ $shipment->shipment_date?->format('d/m/Y') ?? '—' }}</div></div>
+                    <div class="pkg-row">
+                        <div class="pkg-grid">
+                            <div class="kv"><div class="k">Description</div><div class="v">{{ $shipment->description ?? '—' }}</div></div>
+                            <div class="kv"><div class="k">Delivery Location</div><div class="v">{{ $shipment->delivery_location ?? '—' }}</div></div>
+                            <div class="kv"><div class="k">Status</div><div class="v">{{ $shipment->status }}</div></div>
+                            <div class="kv"><div class="k">Date</div><div class="v">{{ $shipment->shipment_date?->format('d/m/Y') ?? '—' }}</div></div>
+                        </div>
+                        <div class="pkg-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        </div>
                     </div>
                 </div>
 

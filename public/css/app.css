@@ -243,3 +243,32 @@ img { max-width: 100%; }
 .charges-table td { padding: 9px 4px; border-bottom: 1px dashed var(--line); }
 .charges-table .amt { text-align: right; font-family: var(--mono); font-weight: 600; color: var(--navy); white-space: nowrap; }
 .charges-table .total-row td { border-bottom: 0; border-top: 2px solid var(--navy); padding-top: 12px; font-size: 16px; }
+
+/* ---------- Polish round 2 ---------- */
+.stats-band { background: var(--white); border-bottom: 1px solid var(--line); }
+.stats-band .container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding-top: 30px; padding-bottom: 30px; }
+.stats-band .stat { text-align: center; }
+.stats-band .stat .num { font-size: 30px; font-weight: 800; color: var(--navy); }
+.stats-band .stat .lbl { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+.cta-band { background: var(--blue-soft); border-top: 1px solid var(--line); }
+.cta-band .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 44px; padding-bottom: 44px; flex-wrap: wrap; }
+.cta-band h2 { font-size: 26px; color: var(--navy); font-weight: 800; }
+.cta-band p { color: var(--muted); margin-top: 4px; }
+
+/* Tracking card v2 */
+.shipment-card { border: 2px solid var(--navy); }
+.detail-section { position: relative; }
+.pkg-row { display: grid; grid-template-columns: 1fr 120px; gap: 24px; align-items: center; }
+.pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; }
+.pkg-box { width: 110px; height: 110px; border-radius: 12px; background: var(--blue-soft); display: flex; align-items: center; justify-content: center; }
+.pkg-box svg { width: 60px; height: 60px; stroke: var(--blue); }
+
+.shipment-card .kv { border-bottom: 0; padding: 6px 0; }
+.shipment-card .kv .k { display: block; }
+
+@media (max-width: 860px) {
+    .stats-band .container { grid-template-columns: repeat(2, 1fr); }
+    .pkg-row { grid-template-columns: 1fr; }
+    .pkg-box { display: none; }
+}

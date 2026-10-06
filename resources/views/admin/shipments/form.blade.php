@@ -29,7 +29,13 @@
             </div>
             <div class="field">
                 <label>Status *</label>
-                <input name="status" required value="{{ old('status', $shipment->status ?? 'In Transit') }}" placeholder="In Transit / Delivered / On Hold">
+                <input name="status" list="status-list" required value="{{ old('status', $shipment->status ?? 'In Transit') }}">
+                <datalist id="status-list">
+                    @foreach (\App\Models\Setting::lines('status_options') as $opt)
+                        <option value="{{ $opt }}">
+                    @endforeach
+                </datalist>
+                <div class="help">Dropdown se select karo ya khud likho. List Settings page se manage hoti hai.</div>
             </div>
             <div class="field">
                 <label>Shipment Date</label>
@@ -72,7 +78,14 @@
         <h2>Charges</h2>
         <form method="POST" action="{{ route('admin.shipments.charges.store', $shipment) }}" class="form-grid" style="margin-bottom:20px">
             @csrf
-            <div class="field"><label>Charge Label *</label><input name="label" required placeholder="e.g. Income Tax"></div>
+            <div class="field"><label>Charge Label *</label>
+                <input name="label" list="charge-list" required placeholder="e.g. Income Tax">
+                <datalist id="charge-list">
+                    @foreach (\App\Models\Setting::lines('charge_options') as $opt)
+                        <option value="{{ $opt }}">
+                    @endforeach
+                </datalist>
+            </div>
             <div class="field"><label>Amount ($) *</label><input type="number" step="0.01" min="0" name="amount" required placeholder="5000"></div>
             <div class="full"><button class="btn btn-primary btn-sm" type="submit">Add Charge</button></div>
         </form>
@@ -107,7 +120,9 @@
         <h2>Tracking History</h2>
         <form method="POST" action="{{ route('admin.shipments.events.store', $shipment) }}" class="form-grid" style="margin-bottom:20px">
             @csrf
-            <div class="field"><label>Status *</label><input name="status" required placeholder="Arrived at facility"></div>
+            <div class="field"><label>Status *</label>
+                <input name="status" list="status-list" required placeholder="Arrived at facility">
+            </div>
             <div class="field"><label>Location</label><input name="location" placeholder="Madrid, Spain"></div>
             <div class="field"><label>Date/Time</label><input type="datetime-local" name="happened_at"></div>
             <div class="field"><label>Description</label><input name="description" placeholder="Optional note"></div>
