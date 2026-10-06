@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [TrackingController::class, 'index'])->name('home');
 Route::get('/track', [TrackingController::class, 'track'])->name('track');
+Route::post('/contact', [\App\Http\Controllers\Admin\MessageController::class, 'store'])->name('contact.store');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
@@ -30,6 +31,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/shipments/bulk', [ShipmentController::class, 'bulk'])->name('shipments.bulk');
         Route::get('/shipments/{shipment}/preview', [ShipmentController::class, 'preview'])->name('shipments.preview');
         Route::post('/shipments/{shipment}/duplicate', [ShipmentController::class, 'duplicate'])->name('shipments.duplicate');
+        Route::get('/shipments-export', [ShipmentController::class, 'export'])->name('shipments.export');
+
+        Route::get('/messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages');
+        Route::post('/messages/{message}/read', [\App\Http\Controllers\Admin\MessageController::class, 'markRead'])->name('messages.read');
+        Route::delete('/messages/{message}', [\App\Http\Controllers\Admin\MessageController::class, 'destroy'])->name('messages.destroy');
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');

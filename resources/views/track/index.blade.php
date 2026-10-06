@@ -75,6 +75,26 @@
         </div>
     </section>
 
+    <section class="section" id="contact">
+        <div class="container" style="max-width:720px">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-sub">Question about a shipment? Message our team.</p>
+            @if (session('success'))
+                <div class="flash">{{ session('success') }}</div>
+            @endif
+            <form method="POST" action="{{ route('contact.store') }}" class="contact-form">
+                @csrf
+                <div class="cf-grid">
+                    <input name="name" required placeholder="Your name" value="{{ old('name') }}">
+                    <input name="email" type="email" required placeholder="Your email" value="{{ old('email') }}">
+                </div>
+                <input name="subject" placeholder="Subject (optional)" value="{{ old('subject') }}">
+                <textarea name="message" required rows="5" placeholder="Your message">{{ old('message') }}</textarea>
+                <button class="btn btn-accent" type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
     <section class="cta-band">
         <div class="container cta-inner">
             <div>

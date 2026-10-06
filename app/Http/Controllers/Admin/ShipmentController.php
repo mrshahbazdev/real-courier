@@ -69,6 +69,28 @@ class ShipmentController extends Controller
         return back()->with('success', count($data['ids']).' shipment(s) → '.$data['status']);
     }
 
+    public function export()
+    {
+        $shipments = Shipment::with('charges')->latest()->get();
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="shipments-'.date('Y-m-d').'.csv"',
+        ];
+
+        return response()->streamDownload(function () use ($shipments) {
+            $out = fopen('php://output', 'w');
+            fputcsv($out, ['Tracking No', 'Status', 'Consignee', 'Phone', 'Sender', 'Destination', 'Description', 'Date', 'Charges Total']);
+            foreach ($shipments as $s) {
+                fputcsv($out, [
+                    $s->tracking_no, $s->status, $s->consignee_name, $s->consignee_phone,
+                    $s->sender_name, $s->delivery_location, $s->description,
+                    $s->shipment_date?->format('Y-m-d'), number_format($s->totalCharges(), 2),
+                ]);
+            }
+            fclose($out);
+        }, 'shipments-'.date('Y-m-d').'.csv', $headers);
+    }
+
     public function preview(Request $request, Shipment $shipment)
     {
         $request->validate(['template' => 'nullable|string|max:8']);

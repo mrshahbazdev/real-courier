@@ -5,7 +5,10 @@
 @section('content')
 <div class="admin-topbar">
     <h1>Dashboard</h1>
-    <a class="btn btn-accent" href="{{ route('admin.shipments.create') }}">+ New Shipment</a>
+    <div style="display:flex;gap:10px">
+        <a class="btn btn-outline" href="{{ route('admin.shipments.export') }}">Export CSV</a>
+        <a class="btn btn-accent" href="{{ route('admin.shipments.create') }}">+ New Shipment</a>
+    </div>
 </div>
 
 <div class="stat-cards">
