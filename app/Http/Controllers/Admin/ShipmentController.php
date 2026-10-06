@@ -76,7 +76,9 @@ class ShipmentController extends Controller
 
     public function create()
     {
-        return view('admin.shipments.form', ['shipment' => new Shipment()]);
+        $shipment = new Shipment(['tracking_no' => Shipment::generateTrackingNo()]);
+
+        return view('admin.shipments.form', compact('shipment'));
     }
 
     public function store(Request $request)
@@ -171,6 +173,7 @@ class ShipmentController extends Controller
             'delivery_location' => 'nullable|string|max:160',
             'status' => 'required|string|max:120',
             'shipment_date' => 'nullable|date',
+            'invoice_template' => ['nullable', 'string', Rule::in(array_keys(\App\Models\Setting::INVOICE_TEMPLATES))],
         ]);
     }
 }

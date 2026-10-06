@@ -34,6 +34,9 @@ class TrackingController extends Controller
             'query' => $request->input('tracking_no'),
             'barcodeSvg' => $shipment ? $this->barcode($shipment->tracking_no) : null,
             'qrSvg' => $shipment ? $this->qr(route('track', ['tracking_no' => $shipment->tracking_no])) : null,
+            'template' => $shipment
+                ? ($shipment->invoice_template ?: Setting::get('default_invoice_template') ?: 't1')
+                : 't1',
         ]);
     }
 

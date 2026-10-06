@@ -90,6 +90,15 @@
                 <textarea name="charge_options" rows="8">{{ old('charge_options', $settings['charge_options']) }}</textarea>
                 <div class="help">Charges add karte waqt dropdown me ye names aate hain — amount har shipment par alag hota hai.</div>
             </div>
+            <div class="field">
+                <label>Default Invoice Template</label>
+                <select name="default_invoice_template">
+                    @foreach (\App\Models\Setting::INVOICE_TEMPLATES as $key => $name)
+                        <option value="{{ $key }}" @selected(old('default_invoice_template', $settings['default_invoice_template']) === $key)>{{ $name }}</option>
+                    @endforeach
+                </select>
+                <div class="help">5 templates — har shipment par alag template bhi choose kar sakte ho (edit page par).</div>
+            </div>
         </div>
     </div>
 

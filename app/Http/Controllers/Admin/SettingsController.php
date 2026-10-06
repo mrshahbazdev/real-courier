@@ -45,6 +45,7 @@ class SettingsController extends Controller
             'authorized_signature_name' => 'nullable|string|max:160',
             'status_options' => 'nullable|string|max:2000',
             'charge_options' => 'nullable|string|max:2000',
+            'default_invoice_template' => 'nullable|in:'.implode(',', array_keys(Setting::INVOICE_TEMPLATES)),
             'payment_methods' => 'nullable|array',
             'payment_methods.*' => 'in:'.implode(',', Setting::PAYMENT_METHODS),
             'logo' => 'nullable|image|max:2048',
@@ -60,7 +61,7 @@ class SettingsController extends Controller
             'service3_title', 'service3_text',
             'stat1_num', 'stat1_label', 'stat2_num', 'stat2_label', 'stat3_num', 'stat3_label',
             'authorized_signature_name',
-            'status_options', 'charge_options',
+            'status_options', 'charge_options', 'default_invoice_template',
         ];
         foreach ($textKeys as $key) {
             Setting::put($key, $data[$key] ?? '');

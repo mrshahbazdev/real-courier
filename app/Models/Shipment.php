@@ -20,6 +20,7 @@ class Shipment extends Model
         'status',
         'shipment_date',
         'registration_fee',
+        'invoice_template',
     ];
 
     protected $casts = [
@@ -40,6 +41,17 @@ class Shipment extends Model
     public function totalCharges(): float
     {
         return (float) $this->charges->sum('amount');
+    }
+
+    public static function generateTrackingNo(): string
+    {
+        do {
+            $no = 'SHP'.str_pad((string) random_int(0, 999), 3, '0', STR_PAD_LEFT)
+                .str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT)
+                .str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+        } while (static::where('tracking_no', $no)->exists());
+
+        return $no;
     }
 
     public static function normalizeTrackingNo(string $value): string

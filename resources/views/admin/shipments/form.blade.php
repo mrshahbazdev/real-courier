@@ -25,7 +25,17 @@
             <div class="field">
                 <label>Tracking No *</label>
                 <input name="tracking_no" required value="{{ old('tracking_no', $shipment->tracking_no) }}" placeholder="SHP48212398476">
-                <div class="help">Letters/numbers only — spaces and dashes are removed automatically.</div>
+                <div class="help">Auto-generate ho gaya hai — chahe to badal lo. Spaces/dashes khud remove ho jate hain.</div>
+            </div>
+            <div class="field">
+                <label>Invoice Template</label>
+                <select name="invoice_template">
+                    <option value="">— Site default ({{ \App\Models\Setting::INVOICE_TEMPLATES[\App\Models\Setting::get('default_invoice_template') ?? 't1'] }}) —</option>
+                    @foreach (\App\Models\Setting::INVOICE_TEMPLATES as $key => $name)
+                        <option value="{{ $key }}" @selected(old('invoice_template', $shipment->invoice_template) === $key)>{{ $name }}</option>
+                    @endforeach
+                </select>
+                <div class="help">Tracking page isi design me khulega. Default Settings page se set hota hai.</div>
             </div>
             <div class="field">
                 <label>Status *</label>

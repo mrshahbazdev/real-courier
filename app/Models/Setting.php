@@ -11,6 +11,14 @@ class Setting extends Model
 
     public const PAYMENT_METHODS = ['visa', 'paypal', 'mastercard', 'stripe', 'gpay', 'applepay'];
 
+    public const INVOICE_TEMPLATES = [
+        't1' => 'Classic Shipping Card',
+        't2' => 'Minimal Receipt',
+        't3' => 'Dark Freight',
+        't4' => 'Formal Invoice',
+        't5' => 'Compact Express',
+    ];
+
     public const DEFAULTS = [
         'company_name' => 'Shipshares',
         'tagline' => 'Delivery Company',
@@ -43,6 +51,7 @@ class Setting extends Model
         'logo' => 'img/logo.png',
         'signature' => null,
         'authorized_signature_name' => '',
+        'default_invoice_template' => 't1',
     ];
 
     public static function get(string $key, ?string $default = null): ?string
