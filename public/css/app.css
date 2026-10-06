@@ -388,3 +388,8 @@ img { max-width: 100%; }
 .inv-t5 .qr-block svg { width:70px; height:70px; }
 .inv-t5 .t5-hist { padding:16px 20px; border-top:1px solid #e3e6ec; }
 @media (max-width:800px){ .inv-t5 .t5-grid{grid-template-columns:1fr 1fr} .inv-t5 .t5-cell{border-right:0;border-bottom:1px solid #e3e6ec} }
+
+/* bulk bar */
+.bulk-bar { background:#fff3cd; border:1px solid #f0df9c; border-radius:10px; padding:10px 14px; margin-bottom:14px; }
+.bulk-status-input { border:1.5px solid var(--line); border-radius:8px; padding:7px 10px; font:inherit; font-size:13px; }
+.sel-row, #selAll { width:16px; height:16px; cursor:pointer; }

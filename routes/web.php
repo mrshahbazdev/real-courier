@@ -27,6 +27,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/shipments/{shipment}/charges/{charge}', [ShipmentController::class, 'updateCharge'])->name('shipments.charges.update');
         Route::delete('/shipments/{shipment}/charges/{charge}', [ShipmentController::class, 'deleteCharge'])->name('shipments.charges.destroy');
         Route::post('/shipments/{shipment}/status', [ShipmentController::class, 'quickStatus'])->name('shipments.status');
+        Route::post('/shipments/bulk', [ShipmentController::class, 'bulk'])->name('shipments.bulk');
+        Route::get('/shipments/{shipment}/preview', [ShipmentController::class, 'preview'])->name('shipments.preview');
         Route::post('/shipments/{shipment}/duplicate', [ShipmentController::class, 'duplicate'])->name('shipments.duplicate');
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings');

@@ -4,7 +4,12 @@
 
 @section('content')
 <div class="admin-topbar">
-    <h1>{{ $shipment->exists ? 'Edit Shipment '.$shipment->tracking_no : 'New Shipment' }}</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <h1>{{ $shipment->exists ? 'Edit Shipment '.$shipment->tracking_no : 'New Shipment' }}</h1>
+        @if ($shipment->exists)
+            <a class="btn btn-outline btn-sm" href="{{ route('admin.shipments.preview', $shipment) }}" target="_blank">Invoice Preview (templates)</a>
+        @endif
+    </div>
     <a class="btn btn-outline" href="{{ route('admin.dashboard') }}">&larr; Back</a>
 </div>
 

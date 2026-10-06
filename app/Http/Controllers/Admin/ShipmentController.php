@@ -51,6 +51,56 @@ class ShipmentController extends Controller
         return back()->with('success', 'Status updated to '.$shipment->status);
     }
 
+    public function bulk(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:shipments,id',
+            'action' => 'required|in:status,delete',
+            'status' => 'required_if:action,status|nullable|string|max:120',
+        ]);
+
+        $shipments = Shipment::whereIn('id', $data['ids']);
+        if ($data['action'] === 'delete') {
+            $shipments->delete();
+            return back()->with('success', count($data['ids']).' shipment(s) deleted.');
+        }
+        $shipments->update(['status' => $data['status']]);
+        return back()->with('success', count($data['ids']).' shipment(s) → '.$data['status']);
+    }
+
+    public function preview(Request $request, Shipment $shipment)
+    {
+        $request->validate(['template' => 'nullable|string|max:8']);
+        $templates = \App\Models\Setting::INVOICE_TEMPLATES;
+        $template = $request->get('template')
+            ?: $shipment->invoice_template
+            ?: \App\Models\Setting::get('default_invoice_template')
+            ?: 't1';
+        if (! isset($templates[$template])) {
+            $template = 't1';
+        }
+        $shipment->load('events', 'charges');
+
+        $generator = new \Picqer\Barcode\BarcodeGeneratorSVG();
+        $barcodeSvg = $generator->getBarcode($shipment->tracking_no, $generator::TYPE_CODE_128, 2, 60);
+        $renderer = new \BaconQrCode\Renderer\ImageRenderer(
+            new \BaconQrCode\Renderer\RendererStyle\RendererStyle(160),
+            new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
+        );
+        $qrSvg = (new \BaconQrCode\Writer($renderer))
+            ->writeString(route('track', ['tracking_no' => $shipment->tracking_no]));
+
+        return view('admin.shipments.preview', [
+            'shipment' => $shipment,
+            'settings' => \App\Models\Setting::allSettings(),
+            'templates' => $templates,
+            'template' => $template,
+            'barcodeSvg' => $barcodeSvg,
+            'qrSvg' => $qrSvg,
+        ]);
+    }
+
     public function duplicate(Shipment $shipment)
     {
         $copy = $shipment->replicate(['tracking_no']);

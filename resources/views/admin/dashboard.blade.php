@@ -30,10 +30,22 @@
     @endif
 </form>
 
+<div class="bulk-bar" id="bulkBar" style="display:none">
+    <form method="POST" action="{{ route('admin.shipments.bulk') }}" id="bulkForm" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        @csrf
+        <span id="bulkCount" style="font-weight:700;font-size:13px"></span>
+        <input name="action" type="hidden" id="bulkAction" value="status">
+        <input name="status" list="quick-status" placeholder="Set status…" class="bulk-status-input" style="min-width:180px">
+        <button class="btn btn-primary btn-sm" type="submit" onclick="document.getElementById('bulkAction').value='status'">Apply Status</button>
+        <button class="btn btn-danger btn-sm" type="submit" onclick="if(!confirm('Delete selected shipments?')){event.preventDefault();return;} document.getElementById('bulkAction').value='delete'">Delete Selected</button>
+    </form>
+</div>
+
 <div class="panel" style="padding:0">
     <table class="table">
         <thead>
             <tr>
+                <th><input type="checkbox" id="selAll"></th>
                 <th>Tracking No</th>
                 <th>Consignee</th>
                 <th>Destination</th>
@@ -46,6 +58,7 @@
         <tbody>
             @forelse ($shipments as $s)
                 <tr>
+                    <td><input type="checkbox" class="sel-row" value="{{ $s->id }}"></td>
                     <td class="mono">{{ $s->tracking_no }}</td>
                     <td>{{ $s->consignee_name }}</td>
                     <td>{{ $s->delivery_location }}</td>
@@ -63,6 +76,7 @@
                     <td>
                         <div class="table-actions">
                             <a class="btn btn-outline btn-sm" href="{{ route('track', ['tracking_no' => $s->tracking_no]) }}" target="_blank">View</a>
+                            <a class="btn btn-outline btn-sm" href="{{ route('admin.shipments.preview', $s) }}" target="_blank" title="Invoice preview">Invoice</a>
                             <a class="btn btn-primary btn-sm" href="{{ route('admin.shipments.edit', $s) }}">Edit</a>
                             <form class="inline-form" method="POST" action="{{ route('admin.shipments.duplicate', $s) }}">
                                 @csrf
@@ -76,7 +90,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No shipments found.</td></tr>
+                <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px">No shipments found.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -88,5 +102,27 @@
 document.querySelectorAll('.status-input').forEach(function (el) {
     el.addEventListener('change', function () { el.closest('form').submit(); });
 });
+
+var selAll = document.getElementById('selAll');
+var rows = document.querySelectorAll('.sel-row');
+var bar = document.getElementById('bulkBar');
+var form = document.getElementById('bulkForm');
+function syncBulk() {
+    var ids = [];
+    rows.forEach(function (r) { if (r.checked) ids.push(r.value); });
+    bar.style.display = ids.length ? 'block' : 'none';
+    document.getElementById('bulkCount').textContent = ids.length + ' selected';
+    form.querySelectorAll('input[name="ids[]"]').forEach(function (i) { i.remove(); });
+    ids.forEach(function (id) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = 'ids[]'; h.value = id;
+        form.appendChild(h);
+    });
+}
+if (selAll) selAll.addEventListener('change', function () {
+    rows.forEach(function (r) { r.checked = selAll.checked; });
+    syncBulk();
+});
+rows.forEach(function (r) { r.addEventListener('change', syncBulk); });
 </script>
 @endsection
