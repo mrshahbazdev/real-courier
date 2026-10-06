@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Shipment extends Model
+{
+    protected $fillable = [
+        'tracking_no',
+        'sender_name',
+        'sender_address',
+        'sender_delivery',
+        'consignee_name',
+        'consignee_phone',
+        'consignee_address',
+        'description',
+        'delivery_location',
+        'status',
+        'shipment_date',
+        'registration_fee',
+    ];
+
+    protected $casts = [
+        'shipment_date' => 'date',
+        'registration_fee' => 'decimal:2',
+    ];
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(ShipmentEvent::class)->orderByDesc('happened_at')->orderByDesc('id');
+    }
+
+    public function charges(): HasMany
+    {
+        return $this->hasMany(ShipmentCharge::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function totalCharges(): float
+    {
+        return (float) $this->charges->sum('amount');
+    }
+
+    public static function normalizeTrackingNo(string $value): string
+    {
+        return strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $value));
+    }
+
+    public function formattedTrackingNo(): string
+    {
+        return trim(chunk_split($this->tracking_no, 3, ' '));
+    }
+}
